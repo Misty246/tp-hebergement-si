@@ -1,20 +1,13 @@
-bite
-# Utiliser l'image officielle Node.js (version LTS recommandée)
+
 FROM node:18-alpine
+RUN apk add --no-cache wget python3 make g++
+RUN wget https://github.com/Requarks/wiki-v2/releases/latest/download/wiki-js.tar.gz
+RUN mkdir /wiki && \
+    tar xzf wiki-js.tar.gz -C /wiki && \
+    rm wiki-js.tar.gz
 
-# Créer le répertoire de l'application
-WORKDIR /app
-
-# Télécharger et extraire la dernière version de Wiki.js
-RUN wget -O wiki.tar.gz https://github.com/Requarks/wiki/releases/latest/download/wiki-js.tar.gz && \
-    tar xzf wiki.tar.gz && \
-    rm wiki.tar.gz
-
-# Copier le fichier de configuration par défaut
-RUN cp config.sample.yml config.yml
-
-# Exposer le port sur lequel écoute Wiki-JS
+WORKDIR /wiki
+RUN mv config.sample.yml config.yml
+RUN npm rebuild sqlite3
 EXPOSE 3000
-
-# Démarrer l'application
-CMD ["node", "server.js"]
+CMD ["node", "server"]
