@@ -1,6 +1,6 @@
 
 FROM node:18-alpine
-RUN apk add --no-cache wget python3 make g++
+RUN apk add --no-cache wget tar
 RUN wget https://github.com/Requarks/wiki-v2/releases/latest/download/wiki-js.tar.gz
 RUN mkdir /wiki && \
     tar xzf wiki-js.tar.gz -C /wiki && \
@@ -8,6 +8,5 @@ RUN mkdir /wiki && \
 
 WORKDIR /wiki
 RUN mv config.sample.yml config.yml
-RUN npm rebuild sqlite3
 EXPOSE 3000
 CMD ["node", "server"]
