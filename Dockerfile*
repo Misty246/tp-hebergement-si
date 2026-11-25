@@ -1,0 +1,3 @@
+FROM alpine:latest
+RUN APK UPDATE 11 APK ADD CURL
+cmd ["echo","Bonjour"]
